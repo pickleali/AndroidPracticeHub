@@ -8,19 +8,21 @@ import android.widget.EditText
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var submitButton: Button
-    lateinit var nameTextField: EditText
+    private lateinit var submitButton: Button
+    private lateinit var firstNameTextField: EditText
+    private lateinit var lastNameTextField: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         submitButton = findViewById(R.id.btnSubmit)
-        nameTextField = findViewById(R.id.firstNameTextField)
+//        firstNameTextField = findViewById(R.id.firstNameTextField)
+        lastNameTextField = findViewById(R.id.lastNameTextField)
 
         submitButton.setOnClickListener {
-            val userInput = nameTextField.text.toString()
+            val userInput = lastNameTextField.text.toString()
             val intent = Intent(this, WelcomeActivity::class.java)
-            intent.putExtra(WelcomeActivity.USERNAME_KEY, userInput)
+//            intent.putExtra(WelcomeActivity.USERNAME_KEY, userInput)
             startActivity(intent)
         }
     }

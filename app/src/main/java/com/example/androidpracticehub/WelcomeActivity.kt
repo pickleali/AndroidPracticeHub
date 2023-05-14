@@ -15,7 +15,15 @@ class WelcomeActivity : AppCompatActivity() {
         welcomeMessage = findViewById(R.id.welcomeTextView)
         val intent = intent
         val userInput = intent.getStringExtra(USERNAME_KEY)
-        welcomeMessage.text = "Welcome, $userInput"
+        userInput?.let {
+            welcomeMessage.text = "Welcome, $userInput"
+        }
+
+//        if (userInput != null) {
+//            welcomeMessage.text = "Welcome, "+userInput
+//        }else
+//            welcomeMessage.text = "Welcome, Guest"
+
 
     }
 
