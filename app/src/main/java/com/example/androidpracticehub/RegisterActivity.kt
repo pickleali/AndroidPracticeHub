@@ -4,10 +4,14 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioGroup
 import android.widget.Toast
+
+private fun isValidEmail(emailInput: String): Boolean {
+    return Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()
+}
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var firstName: EditText
@@ -33,27 +37,34 @@ class RegisterActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
 
         registerButton.setOnClickListener {
-            editor.apply {
-                putString(Constants.PREFS_FIRST_NAME_KEY, firstName.text.toString())
-                putString(Constants.PREFS_LAST_NAME_KEY, lastName.text.toString())
-                putString(Constants.PREFS_EMAIL_KEY, email.text.toString())
-                putString(Constants.PREFS_PASSWORD_KEY, password.text.toString())
-                putBoolean(Constants.PREFS_LOGIN_KEY, true)
-                apply()
-            }
-            Toast.makeText(this, R.string.registered_successfully, Toast.LENGTH_LONG).show()
-            Intent(this, WelcomeActivity::class.java).also {
-                startActivity(it)
+            val userEmail = email.text.toString().trim()
+
+            if (isValidEmail(emailInput = userEmail)) {
+                editor.apply {
+                    putString(Constants.PREFS_FIRST_NAME_KEY, firstName.text.toString())
+                    putString(Constants.PREFS_LAST_NAME_KEY, lastName.text.toString())
+                    putString(Constants.PREFS_EMAIL_KEY, email.text.toString())
+                    putString(Constants.PREFS_PASSWORD_KEY, password.text.toString())
+                    putBoolean(Constants.PREFS_LOGIN_KEY, true)
+                    apply()
+                }
+                // All inputs are valid - show Toast Message and redirect to Home(welcome)screen
+                Toast.makeText(this, R.string.registered_successfully, Toast.LENGTH_LONG).show()
+                Intent(this, WelcomeActivity::class.java).also {
+                    startActivity(it)
+                }
+            } else {
+                // Email input is invalid - error Toast message
+                Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_LONG).show()
             }
         }
-
         loginButton.setOnClickListener {
             Intent(this, MainActivity::class.java).also {
                 startActivity(it)
             }
         }
-    }
 
+    }
 
     object Constants {
         const val SHARED_PREFS_NAME = "prefs"

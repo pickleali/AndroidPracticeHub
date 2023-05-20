@@ -15,15 +15,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-
-private fun isValidEmail(email: String): Boolean {
-    return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
 
 class MainActivity : AppCompatActivity() {
     private lateinit var emailTextField: EditText
@@ -56,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             val userPassword = passwordTextField.text.toString().trim()
 
             // check if: 1.email is valid 2. registered or not
-            if (isCredentialsCorrect(emailInput = userEmail, passwordInput = userPassword) && isValidEmail(userEmail)) {
+            if (isCredentialsCorrect(emailInput = userEmail, passwordInput = userPassword)) {
                 // change Login boolean value --> true
                 sharedPreferences.edit().apply {
                     putBoolean(RegisterActivity.Constants.PREFS_LOGIN_KEY, true)
