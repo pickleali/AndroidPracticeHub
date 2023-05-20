@@ -3,5 +3,5 @@
     <string name="registered_successfully">Registered successfully!</string>
     <string name="login_successfully">Logged in successfully!</string>
     <string name="email_password_incorrect">Email or password is incorrect</string>
-    <string name="welcome_message">"Welcome, %1s</string>
+    <string name="welcome_message">Welcome <b>%1s</b></string>
 </resources>
