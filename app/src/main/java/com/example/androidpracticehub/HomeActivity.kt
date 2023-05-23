@@ -6,7 +6,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
-class WelcomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var nameWelcomeText: TextView
     private lateinit var emailWelcomeText: TextView
@@ -16,24 +16,23 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_window)
         nameWelcomeText = findViewById(R.id.nameWelcomeText)
         emailWelcomeText = findViewById(R.id.emailWelcomeText)
-        val sharedPref = getSharedPreferences(RegisterActivity.Constants.SHARED_PREFS_NAME, MODE_PRIVATE)
+        val cachingLayer:CachingLayer = CachingLayerImpl(context = this)
         nameWelcomeText.text = getString(
             R.string.welcome_message,
-            sharedPref.getString(RegisterActivity.Constants.PREFS_FIRST_NAME_KEY, null)
+            cachingLayer.getName()
         )
-        emailWelcomeText.text = sharedPref.getString(RegisterActivity.Constants.PREFS_EMAIL_KEY, null)
+        emailWelcomeText.text = cachingLayer.getEmail()
+
 
         logoutButton = findViewById(R.id.logoutBtn)
         logoutButton.setOnClickListener {
 
             // change Login value --> false
-            sharedPref.edit().apply {
-                putBoolean(RegisterActivity.Constants.PREFS_LOGIN_KEY, false)
-                apply()
-            }
+            cachingLayer.setLoggedIn(false)
             // redirect to login screen
-            Intent(this, MainActivity::class.java).also {
+            Intent(this, LoginActivity::class.java).also {
                 startActivity(it)
+                finish() // destroy the current activity (HomeActivity) after calling the next activity (LoginActivity)
             }
 
         }

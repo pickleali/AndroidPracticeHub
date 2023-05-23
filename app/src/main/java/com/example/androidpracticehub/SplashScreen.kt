@@ -13,7 +13,6 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
-
         // Animation background Image
         val backgroundImage: ImageView = findViewById(R.id.SplashScreenImage)
 
@@ -23,7 +22,7 @@ class SplashScreen : AppCompatActivity() {
 
         // Handler with postDelayed (2sec) to navigate to Login screen after delay time
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finish()
         }, 2000) // 2000 is the delayed time in milliseconds.

@@ -32,46 +32,31 @@ class RegisterActivity : AppCompatActivity() {
         registerButton = findViewById(R.id.btnSignUp)
         loginButton = findViewById(R.id.btnSignIn)
 
-        val sharedPreferences =
-            getSharedPreferences(Constants.SHARED_PREFS_NAME, Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
+        val cachingLayer:CachingLayer = CachingLayerImpl(context = this)
 
         registerButton.setOnClickListener {
             val userEmail = email.text.toString().trim()
 
-            if (isValidEmail(emailInput = userEmail)) {
-                editor.apply {
-                    putString(Constants.PREFS_FIRST_NAME_KEY, firstName.text.toString())
-                    putString(Constants.PREFS_LAST_NAME_KEY, lastName.text.toString())
-                    putString(Constants.PREFS_EMAIL_KEY, email.text.toString())
-                    putString(Constants.PREFS_PASSWORD_KEY, password.text.toString())
-                    putBoolean(Constants.PREFS_LOGIN_KEY, true)
-                    apply()
-                }
+            if (isValidEmail(emailInput = userEmail) && password.text.toString().isNotEmpty()) {
+                cachingLayer.setName(firstName.text.toString())
+                cachingLayer.setEmail(email.text.toString())
+                cachingLayer.setPassword(password.text.toString())
+                cachingLayer.setLoggedIn(true)
                 // All inputs are valid - show Toast Message and redirect to Home(welcome)screen
                 Toast.makeText(this, R.string.registered_successfully, Toast.LENGTH_LONG).show()
-                Intent(this, WelcomeActivity::class.java).also {
+                Intent(this, HomeActivity::class.java).also {
                     startActivity(it)
                 }
             } else {
                 // Email input is invalid - error Toast message
-                Toast.makeText(this, R.string.invalid_email, Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.invalid_email_password, Toast.LENGTH_LONG).show()
             }
         }
         loginButton.setOnClickListener {
-            Intent(this, MainActivity::class.java).also {
+            Intent(this, LoginActivity::class.java).also {
                 startActivity(it)
             }
         }
 
-    }
-
-    object Constants {
-        const val SHARED_PREFS_NAME = "prefs"
-        const val PREFS_FIRST_NAME_KEY = "firstName"
-        const val PREFS_LAST_NAME_KEY = "lastName"
-        const val PREFS_EMAIL_KEY = "email"
-        const val PREFS_PASSWORD_KEY = "password"
-        const val PREFS_LOGIN_KEY = "login"
     }
 }
